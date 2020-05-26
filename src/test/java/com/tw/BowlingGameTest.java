@@ -20,4 +20,12 @@ public class BowlingGameTest {
         int result = bowlingGame.getScore();
         assertEquals(5, result);
     }
+
+    @Test
+    public void shouldScoreTotalNumberOfPinsKnockedDownGivenTwoThrows() {
+        bowlingGame.addThrow(5);
+        bowlingGame.addThrow(4);
+        int score = bowlingGame.getScore();
+        assertEquals(9, score);
+    }
 }

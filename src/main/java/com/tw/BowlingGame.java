@@ -11,7 +11,7 @@ public class BowlingGame {
 
     public int getScore() {
         int total = frameScore.stream().mapToInt(Integer::intValue).sum();
-        if (!firstThrow) {
+        if (!firstThrow && frameScore.size() < 10) {
             total += singleFrameScore;
         }
         return total;

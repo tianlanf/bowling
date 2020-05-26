@@ -28,4 +28,16 @@ public class BowlingGameTest {
         int score = bowlingGame.getScore();
         assertEquals(9, score);
     }
+
+    @Test
+    public void shouldScoreTotalNumberOfPinsKnockedDownGivenTenFramesWithoutSpareOrStrike() {
+        int i = 0;
+        while (i < 10) {
+            bowlingGame.addThrow(5);
+            bowlingGame.addThrow(4);
+            i++;
+        }
+        int score = bowlingGame.getScore();
+        assertEquals(90, score);
+    }
 }

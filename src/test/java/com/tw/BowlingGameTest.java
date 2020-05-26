@@ -13,4 +13,11 @@ public class BowlingGameTest {
         int result = bowlingGame.getScore();
         assertEquals(0, result);
     }
+
+    @Test
+    public void shouldScorePinsKnockedDownGivenOneThrow() {
+        bowlingGame.addThrow(5);
+        int result = bowlingGame.getScore();
+        assertEquals(5, result);
+    }
 }

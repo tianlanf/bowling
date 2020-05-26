@@ -54,4 +54,18 @@ public class BowlingGameTest {
         int score = bowlingGame.getScore();
         assertEquals(96, score);
     }
+
+    @Test
+    public void shouldScoreCorrectlyWhenFirstNineFramesAreSpare() {
+        int i = 0;
+        while (i < 9) {
+            bowlingGame.addThrow(6);
+            bowlingGame.addThrow(4);
+            i++;
+        }
+        bowlingGame.addThrow(6);
+        bowlingGame.addThrow(3);
+        int score = bowlingGame.getScore();
+        assertEquals(153, score);
+    }
 }

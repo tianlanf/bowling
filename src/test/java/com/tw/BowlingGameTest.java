@@ -123,4 +123,18 @@ public class BowlingGameTest {
         assertEquals(264, score);
     }
 
+    @Test
+    public void shouldScoreCorrectlyWhenLastFramesIsStrike() {
+        int i = 0;
+        while (i < 10) {
+            bowlingGame.addThrow(10);
+            i++;
+        }
+        bowlingGame.addThrow(10);
+        bowlingGame.addThrow(10);
+
+        int score = bowlingGame.getScore();
+        assertEquals(300, score);
+    }
+
 }

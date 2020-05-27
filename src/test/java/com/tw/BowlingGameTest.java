@@ -96,4 +96,18 @@ public class BowlingGameTest {
         int score = bowlingGame.getScore();
         assertEquals(160, score);
     }
+
+    @Test
+    public void shouldScoreCorrectlyWhenFirstFrameIsStrike() {
+        bowlingGame.addThrow(10);
+        int i = 1;
+        while (i < 10) {
+            bowlingGame.addThrow(6);
+            bowlingGame.addThrow(3);
+            i++;
+        }
+        int score = bowlingGame.getScore();
+        assertEquals(100, score);
+    }
+
 }

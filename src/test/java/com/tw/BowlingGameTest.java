@@ -110,4 +110,17 @@ public class BowlingGameTest {
         assertEquals(100, score);
     }
 
+    @Test
+    public void shouldScoreCorrectlyWhenFirstNineFramesAreStrike() {
+        int i = 0;
+        while (i < 9) {
+            bowlingGame.addThrow(10);
+            i++;
+        }
+        bowlingGame.addThrow(6);
+        bowlingGame.addThrow(3);
+        int score = bowlingGame.getScore();
+        assertEquals(264, score);
+    }
+
 }

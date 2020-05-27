@@ -1,68 +1,51 @@
 package com.tw;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 public class BowlingGame {
-    private int singleFrameScore;
-    private List<Integer> frameScore = new ArrayList<>();
-    private boolean firstThrow = true;
-    private boolean lastFrameIsSpare = false;
-    private boolean lastFrameIsStrike = false;
-    private int strikeBonusIndex = 0;
+    private static final int TEN_TURNS = 10;
+    private static final int TEN_PINS = 10;
 
-    public int getScore() {
-        int total = frameScore.stream().mapToInt(Integer::intValue).sum();
-        if (!firstThrow && frameScore.size() < 10) {
-            total += singleFrameScore;
-        }
-        return total;
+    private int[] pinsOfThrows = new int[21];
+    private int currentThrow = 0;
+    private int[] scoresOfFrame = new int[10];
+
+    int getScore() {
+        return Arrays.stream(scoresOfFrame).sum();
     }
 
-    public void addThrow(int pins) {
-        if (firstThrow) {
-            singleFrameScore = 0;
-        }
-        addSpareBonus(pins);
-        addStrikeBonus(pins);
-        singleFrameScore += pins;
-        if (isStrike()) {
-            frameScore.add(singleFrameScore);
-            lastFrameIsStrike = true;
-            return;
-        }
-        if (!firstThrow) {
-            lastFrameIsSpare = singleFrameScore == 10;
-            frameScore.add(singleFrameScore);
-        }
-        firstThrow = !firstThrow;
-    }
+    void addThrow(int pins) {
+        int ball = 0;
+        pinsOfThrows[currentThrow++] = pins;
 
-    private boolean isStrike() {
-        return firstThrow && singleFrameScore == 10;
-    }
-
-    private void addSpareBonus(int pins) {
-        if (lastFrameIsSpare) {
-            Integer lastFrameScore = frameScore.get(frameScore.size() - 1);
-            lastFrameScore += pins;
-            frameScore.remove(frameScore.size() - 1);
-            frameScore.add(lastFrameScore);
-            lastFrameIsSpare = false;
+        for (int frameId = 0; frameId < TEN_TURNS; frameId++) {
+            if (isStrike(ball)) {
+                scoresOfFrame[frameId] = TEN_PINS + spikeBonus(ball);
+                ball += 1;
+            }
+            else if (isSpare(ball)) {
+                scoresOfFrame[frameId] = TEN_PINS + spareBonus(ball);
+                ball += 2;
+            } else {
+                scoresOfFrame[frameId] = pinsOfThrows[ball] + pinsOfThrows[ball + 1];
+                ball += 2;
+            }
         }
     }
 
-    private void addStrikeBonus(int pins) {
-        if (lastFrameIsStrike && strikeBonusIndex < 2) {
-            Integer lastFrameScore = frameScore.get(frameScore.size() - 1);
-            lastFrameScore += pins;
-            frameScore.remove(frameScore.size() - 1);
-            frameScore.add(lastFrameScore);
-            strikeBonusIndex++;
-        }
-        if (strikeBonusIndex > 1) {
-            strikeBonusIndex = 0;
-            lastFrameIsStrike = false;
-        }
+    private int spikeBonus(int ball) {
+        return pinsOfThrows[ball + 1] + pinsOfThrows[ball + 2];
+    }
+
+    private boolean isStrike(int ball) {
+        return pinsOfThrows[ball] == TEN_PINS;
+    }
+
+    private int spareBonus(int ball) {
+        return pinsOfThrows[ball + 2];
+    }
+
+    private boolean isSpare(int ball) {
+        return pinsOfThrows[ball] + pinsOfThrows[ball + 1] == TEN_PINS;
     }
 }
